@@ -1,0 +1,27 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getPosts } from '../../libs/posts';
+import type { Post } from '../../libs/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+
+  return posts.map((post: Post) => ({
+    params: {
+      id: post.id,
+    },
+    props: {
+      post,
+    },
+  }));
+}
+
+const { post } = Astro.props;
+---
+
+<Layout title={post.title}>
+  <main class="my-20 prose mx-auto">
+    <h1>{post.title}</h1>
+    <div class="">{post.body}</div>
+  </main>
+</Layout>
